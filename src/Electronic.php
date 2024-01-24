@@ -4,7 +4,7 @@ namespace App;
 
 use App\Abstract\AbstractProduct;
 
-class Electronic extends Abstract\AbstractProduct
+class Electronic extends AbstractProduct
 {
 
     private ?string $brand = null;

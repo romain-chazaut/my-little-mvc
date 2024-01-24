@@ -4,7 +4,7 @@ namespace App;
 
 use App\Abstract\AbstractProduct;
 
-class Clothing extends Abstract\AbstractProduct
+class Clothing extends AbstractProduct
 {
 
     private ?string $size = null;

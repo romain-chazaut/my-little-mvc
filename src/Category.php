@@ -2,11 +2,8 @@
 
 namespace App;
 
-use App\Abstract\AbstractProduct;
-
 class Category
 {
-
     private ?int $id;
 
     private ?string $name;
