@@ -138,4 +138,72 @@ class Category
         return $products;
     }
 
+    public function findOneById(int $id): static|false
+    {
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
+        $sql = "SELECT * FROM category WHERE id = :id";
+        $statement = $pdo->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $category = $statement->fetch(\PDO::FETCH_ASSOC);
+        if ($category) {
+            return new static(
+                $category['id'],
+                $category['name'],
+                $category['description'],
+                new \DateTime($category['created_at']),
+                $category['updated_at'] ? (new \DateTime($category['updated_at'])) : null
+            );
+        }
+
+        return false;
+    }
+
+    public function findAll(): array
+    {
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
+        $sql = "SELECT * FROM category";
+        $statement = $pdo->prepare($sql);
+        $statement->execute();
+        $categories = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        $results = [];
+        foreach ($categories as $category) {
+            $results[] = new static(
+                $category['id'],
+                $category['name'],
+                $category['description'],
+                new \DateTime($category['created_at']),
+                $category['updated_at'] ? (new \DateTime($category['updated_at'])) : null
+            );
+        }
+
+        return $results;
+    }
+
+    public function create(): static
+    {
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
+        $sql = "INSERT INTO category (name, description, created_at) VALUES (:name, :description, :created_at)";
+        $statement = $pdo->prepare($sql);
+        $statement->bindValue(':name', $this->name);
+        $statement->bindValue(':description', $this->description);
+        $statement->bindValue(':created_at', (new \DateTime())->format('Y-m-d H:i:s'));
+        $statement->execute();
+        $this->id = (int)$pdo->lastInsertId();
+        return $this;
+    }
+
+    public function update(): static
+    {
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
+        $sql = "UPDATE category SET name = :name, description = :description, updated_at = :updated_at WHERE id = :id";
+        $statement = $pdo->prepare($sql);
+        $statement->bindValue(':name', $this->name);
+        $statement->bindValue(':description', $this->description);
+        $statement->bindValue(':updated_at', (new \DateTime())->format('Y-m-d H:i:s'));
+        $statement->bindValue(':id', $this->id);
+        $statement->execute();
+        return $this;
+    }
+
 }

@@ -3,8 +3,9 @@
 namespace App;
 
 use App\Abstract\AbstractProduct;
+use App\Interface\StockableInterface;
 
-class Clothing extends AbstractProduct
+class Clothing extends AbstractProduct implements StockableInterface
 {
 
     private ?string $size = null;
@@ -22,6 +23,22 @@ class Clothing extends AbstractProduct
         $this->color = $color;
         $this->type = $type;
         $this->material_fee = $material_fee;
+    }
+
+    public function addStock(int $quantity): static
+    {
+        $this->quantity += $quantity;
+        $this->updatedAt = new \DateTime();
+        $this->update();
+        return $this;
+    }
+
+    public function removeStock(int $quantity): static
+    {
+        $this->quantity -= $quantity;
+        $this->updatedAt = new \DateTime();
+        $this->update();
+        return $this;
     }
 
     public function getSize(): ?string
@@ -136,6 +153,31 @@ class Clothing extends AbstractProduct
         $statement->execute();
         $this->setId((int)$pdo->lastInsertId());
         $sql = "INSERT INTO clothing (product_id, size, color, type, material_fee) VALUES (:product_id, :size, :color, :type, :material_fee)";
+        $statement = $pdo->prepare($sql);
+        $statement->bindValue(':product_id', $this->getId());
+        $statement->bindValue(':size', $this->getSize());
+        $statement->bindValue(':color', $this->getColor());
+        $statement->bindValue(':type', $this->getType());
+        $statement->bindValue(':material_fee', $this->getMaterialFee());
+        $statement->execute();
+        return $this;
+    }
+
+    public function update(): static
+    {
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
+        $sql = "UPDATE product SET name = :name, photos = :photos, price = :price, description = :description, quantity = :quantity, category_id = :category_id, updated_at = :updated_at WHERE id = :id";
+        $statement = $pdo->prepare($sql);
+        $statement->bindValue(':id', $this->getId());
+        $statement->bindValue(':name', $this->getName());
+        $statement->bindValue(':photos', json_encode($this->getPhotos()));
+        $statement->bindValue(':price', $this->getPrice());
+        $statement->bindValue(':description', $this->getDescription());
+        $statement->bindValue(':quantity', $this->getQuantity());
+        $statement->bindValue(':category_id', $this->getCategoryId());
+        $statement->bindValue(':updated_at', (new \DateTime())->format('Y-m-d H:i:s'));
+        $statement->execute();
+        $sql = "UPDATE clothing SET size = :size, color = :color, type = :type, material_fee = :material_fee WHERE product_id = :product_id";
         $statement = $pdo->prepare($sql);
         $statement->bindValue(':product_id', $this->getId());
         $statement->bindValue(':size', $this->getSize());

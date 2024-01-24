@@ -236,4 +236,21 @@ abstract class AbstractProduct
         return $this;
     }
 
+    public function update(): static
+    {
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
+        $sql = "UPDATE product SET name = :name, photos = :photos, price = :price, description = :description, quantity = :quantity, category_id = :category_id, updated_at = :updated_at WHERE id = :id";
+        $statement = $pdo->prepare($sql);
+        $statement->bindValue(':id', $this->id);
+        $statement->bindValue(':name', $this->name);
+        $statement->bindValue(':photos', json_encode($this->photos));
+        $statement->bindValue(':price', $this->price);
+        $statement->bindValue(':description', $this->description);
+        $statement->bindValue(':quantity', $this->quantity);
+        $statement->bindValue(':category_id', $this->category_id);
+        $statement->bindValue(':updated_at', (new \DateTime())->format('Y-m-d H:i:s'));
+        $statement->execute();
+        return $this;
+    }
+
 }
