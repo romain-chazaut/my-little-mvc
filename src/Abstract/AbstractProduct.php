@@ -149,7 +149,7 @@ abstract class AbstractProduct
 
     public function getCategory(): Category|false
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=playground', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
         $sql = "SELECT * FROM category WHERE id = :id";
         $statement = $pdo->prepare($sql);
         $statement->bindValue(':id', $this->category_id);
@@ -170,7 +170,7 @@ abstract class AbstractProduct
 
     public function findOneById(int $id): static|false
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=playground', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
         $sql = "SELECT * FROM product WHERE id = :id";
         $statement = $pdo->prepare($sql);
         $statement->bindValue(':id', $id);
@@ -195,7 +195,7 @@ abstract class AbstractProduct
 
     public function findAll(): array
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=playground', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
         $sql = "SELECT * FROM product";
         $statement = $pdo->prepare($sql);
         $statement->execute();
@@ -220,7 +220,7 @@ abstract class AbstractProduct
 
     public function create(): static
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=playground', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
         $sql = "INSERT INTO product (name, photos, price, description, quantity, category_id, created_at, updated_at) VALUES (:name, :photos, :price, :description, :quantity, :category_id, :created_at, :updated_at)";
         $statement = $pdo->prepare($sql);
         $statement->bindValue(':name', $this->name);

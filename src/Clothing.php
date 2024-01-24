@@ -70,7 +70,7 @@ class Clothing extends AbstractProduct
 
     public function findOneById(int $id): static|false
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=playground', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
         $statement = $pdo->prepare('SELECT * FROM clothing INNER JOIN product ON clothing.product_id = product.id WHERE clothing.product_id = :id');
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->execute();
@@ -96,7 +96,7 @@ class Clothing extends AbstractProduct
 
     public function findAll(): array
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=playground', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
         $statement = $pdo->prepare('SELECT * FROM clothing INNER JOIN product ON clothing.product_id = product.id');
         $statement->execute();
         $results = $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -122,7 +122,7 @@ class Clothing extends AbstractProduct
 
     public function create(): static
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=playground', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
         $sql = "INSERT INTO product (name, photos, price, description, quantity, category_id, created_at, updated_at) VALUES (:name, :photos, :price, :description, :quantity, :category_id, :created_at, :updated_at)";
         $statement = $pdo->prepare($sql);
         $statement->bindValue(':name', $this->getName());

@@ -42,7 +42,7 @@ class Electronic extends AbstractProduct
 
     public function findOneById(int $id): static|false
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=playground', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
 
         $statement = $pdo->prepare('SELECT * FROM product INNER JOIN electronic ON product.id = electronic.product_id WHERE product.id = :id');
 
@@ -73,7 +73,7 @@ class Electronic extends AbstractProduct
 
     public function findAll(): array
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=playground', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
 
         $statement = $pdo->prepare('SELECT * FROM product INNER JOIN electronic ON product.id = electronic.product_id');
 
@@ -104,7 +104,7 @@ class Electronic extends AbstractProduct
 
     public function create(): static
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=playground', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
 
         $sql = "INSERT INTO product (name, photos, price, description, quantity, category_id, created_at, updated_at) VALUES (:name, :photos, :price, :description, :quantity, :category_id, :created_at, :updated_at)";
 
