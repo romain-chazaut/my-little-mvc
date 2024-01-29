@@ -59,7 +59,7 @@ class Electronic extends AbstractProduct implements StockableInterface
 
     public function findOneById(int $id): static|false
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=my_little_mvc', 'root', 'Romain-1964');
 
         $statement = $pdo->prepare('SELECT * FROM product INNER JOIN electronic ON product.id = electronic.product_id WHERE product.id = :id');
 

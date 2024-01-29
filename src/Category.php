@@ -80,7 +80,7 @@ class Category
 
     public function getProducts(): array
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=draft-shop', 'root', '');
+        $pdo = new \PDO('mysql:host=localhost;dbname=my_little_mvc', 'root', 'Romain-1964');
 
         $result = [];
 
