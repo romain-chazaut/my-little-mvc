@@ -11,6 +11,7 @@ $clothTab = $cloth->findAll();
 $electronicTab = $electronic->findAll();
 
 ?>
+gfeg
 
 <!doctype html>
 <html lang="fr">
