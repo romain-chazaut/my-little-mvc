@@ -9,10 +9,7 @@ $electronic = new \App\Model\Electronic();
 
 $clothTab = $cloth->findAll();
 $electronicTab = $electronic->findAll();
-
-//dfgerher
 ?>
-gfeg
 
 <!doctype html>
 <html lang="fr">
