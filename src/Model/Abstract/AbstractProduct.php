@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Abstract;
+namespace App\Model\Abstract;
 
-use App\Category;
+use App\Model\Category;
 
 abstract class AbstractProduct
 {
