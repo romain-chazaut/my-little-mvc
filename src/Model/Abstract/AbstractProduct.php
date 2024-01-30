@@ -11,7 +11,7 @@ abstract class AbstractProduct
 
     protected ?string $name = null;
 
-    protected ?array $photos = null;
+    protected null|array|string $photos = null;
 
     protected ?int $price = null;
 
@@ -70,9 +70,15 @@ abstract class AbstractProduct
         return $this;
     }
 
-    public function getPhotos(): ?array
+    public function getPhotos(): ?string
     {
-        return $this->photos;
+        if (is_string($this->photos)) {
+            return $this->photos;
+        } elseif (is_array($this->photos)){
+            return implode(', ', $this->photos);
+        } else {
+            return 'Pas de photos';
+        }
     }
 
     public function setPhotos(?array $photos): AbstractProduct
@@ -125,9 +131,13 @@ abstract class AbstractProduct
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): string
     {
-        return $this->createdAt;
+        if ($this->createdAt instanceof \DateTime) {
+            return $this->createdAt->format('Y-m-d H:i:s');
+        } else {
+            return 'ya problème chef';
+        }
     }
 
     public function setCreatedAt(?\DateTime $createdAt): AbstractProduct
@@ -136,10 +146,15 @@ abstract class AbstractProduct
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): string
     {
-        return $this->updatedAt;
+        if ($this->updatedAt instanceof \DateTime) {
+            return $this->updatedAt->format('Y-m-d H:i:s');
+        } else {
+            return 'Pas de date de mise à jour';
+        }
     }
+
 
     public function setUpdatedAt(?\DateTime $updatedAt): AbstractProduct
     {
