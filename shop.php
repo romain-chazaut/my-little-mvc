@@ -10,4 +10,5 @@ $products = array_merge($cloth->findAll(), $electronic->findAll());
 
 echo '<pre>';
 var_dump($products);
-echo '</pre>';
+
+//test git dekzhjfoiùe
