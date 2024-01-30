@@ -8,6 +8,6 @@ $cloth = new \App\Model\Clothing();
 $electronic = new \App\Model\Electronic();
 $products = array_merge($cloth->findAll(), $electronic->findAll());
 
+echo '<pre>';
 var_dump($products);
-
-
+echo '</pre>';
