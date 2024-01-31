@@ -29,7 +29,7 @@ class User
         $this->role = $role;
     }
 
-    public function findOneById(int $id) {
+    public function findOneById(int $id): ?User{
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
         $stmt = $pdo->prepare('SELECT * from user where id = :id');
         $stmt->bindParam(':id', $id,\PDO::PARAM_INT);
@@ -76,9 +76,7 @@ class User
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
 
-        $sql = "INSERT INTO user (fullname, email, password, role) VALUES (:fullname, :email, :password, :role)";
-
-        $stmt = $pdo->prepare($sql);
+        $stmt = $pdo->prepare("INSERT INTO user (fullname, email, password, role) VALUES (:fullname, :email, :password, :role)");
 
         $stmt->bindValue(':fullname', $this->getFullname());
         $stmt->bindValue(':email', $this->getEmail());
@@ -96,9 +94,7 @@ class User
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
 
-        $sql = "UPDATE user SET fullname = :fullname, email = :email, password = :password, role = :role WHERE id = :id";
-
-        $stmt = $pdo->prepare($sql);
+        $stmt = $pdo->prepare("UPDATE user SET fullname = :fullname, email = :email, password = :password, role = :role WHERE id = :id");
 
         $stmt->bindValue(':id', $this->getId());
         $stmt->bindValue(':fullname', $this->getFullname());
