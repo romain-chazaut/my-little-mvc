@@ -3,6 +3,7 @@
 namespace App\Model\Abstract;
 
 use App\Model\Category;
+use DateTime;
 
 abstract class AbstractProduct
 {
@@ -131,7 +132,7 @@ abstract class AbstractProduct
         return $this;
     }
 
-    public function getCreatedAt(): string
+    public function getCreatedAt(): string|DateTime
     {
         if ($this->createdAt instanceof \DateTime) {
             return $this->createdAt->format('Y-m-d H:i:s');
@@ -146,7 +147,7 @@ abstract class AbstractProduct
         return $this;
     }
 
-    public function getUpdatedAt(): string
+    public function getUpdatedAt(): string|DateTime
     {
         if ($this->updatedAt instanceof \DateTime) {
             return $this->updatedAt->format('Y-m-d H:i:s');
