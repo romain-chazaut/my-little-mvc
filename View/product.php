@@ -1,11 +1,12 @@
 <?php
+
 require_once '../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
 $dotenv->load();
 
-if (isset($_GET['id_product']) && isset($_GET['product_type'])) {
-    $id_product = intval($_GET['id_product']);
-    $product_type = $_GET['product_type'];
+if (isset($_GET['product_id']) && isset($_GET['type'])) {
+    $id_product = intval($_GET['product_id']);
+    $product_type = $_GET['type'];
     if (gettype($id_product) == 'integer') {
         if ($product_type == 'electronic') {
             $electronic = new \App\Model\Electronic();
@@ -30,5 +31,5 @@ if (isset($_GET['id_product']) && isset($_GET['product_type'])) {
     echo "Le produit demandé n'est pas disponible";
 }
 
-// http://localhost/my-little-mvc/View/product.php?id_product=1&product_type=clothing
-// http://localhost/my-little-mvc/View/product.php?id_product=6&product_type=electronic
+// http://localhost/my-little-mvc/View/product.php?product_id=3&type=clothing
+// http://localhost/my-little-mvc/View/product.php?product_id=9&type=electronic

@@ -9,6 +9,10 @@ $electronic = new \App\Model\Electronic();
 
 $clothTab = $cloth->findAll();
 $electronicTab = $electronic->findAll();
+
+// appelez la méthode index (ShopController) en passant en paramètre la valeur du paramètre d’URL ‘page’.
+
+
 ?>
 
 <!doctype html>
@@ -18,7 +22,7 @@ $electronicTab = $electronic->findAll();
         <meta name="viewport"
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Job-02</title>
+        <title>RAM SHOP</title>
     </head>
 
     <body>
