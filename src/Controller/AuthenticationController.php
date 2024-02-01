@@ -13,11 +13,11 @@ use App\Model\User;
 session_start();
 class AuthenticationController
 {
-    public function register(string $fullname, string $email, string $password, string $confirmPassword): bool
+    public function verifyLoginCredentials(User $user, string $email, string $password, string $confirmPassword): array
     {
-        $user = new User();
+        $errors = [];
 
-        if ($user->findOneByEmail($email) !== false) {
+        if ($user->findOneByEmail($email) !== false && $user->findOneByEmail($email)->getId() !== $_SESSION['user']->getId()) {
             $errors[] = "Cet email est déjà utilisé. Veuillez en choisir un autre.";
         }
 
@@ -30,6 +30,14 @@ class AuthenticationController
             $errors[] = "Les mots de passe ne correspondent pas.";
         }
 
+        return $errors;
+    }
+    public function register(string $fullname, string $email, string $password, string $confirmPassword): bool
+    {
+        $user = new User();
+
+        $errors = $this->verifyLoginCredentials($user, $email, $password, $confirmPassword);
+
         if (empty($errors)) {
             unset($_SESSION['errors']);
             $_SESSION['success'] = "Votre compte a bien été créé.";
@@ -40,6 +48,8 @@ class AuthenticationController
             $user->setRole(['ROLE_USER']);
 
             $user->create();
+
+            $_SESSION['user'] = $user;
 
             return true;
         }else {
@@ -58,17 +68,39 @@ class AuthenticationController
         if ($userpassword == $password) {
             $_SESSION['success'] = "Vous êtes connecté.";
 
-            $_SESSION['user'] = [
-                'id' => $user->getId(),
-                'fullname' => $user->getFullname(),
-                'email' => $user->getEmail(),
-                'role' => $user->getRole(),
-                'state' => 'connected'
-            ];
+            $user->connect();
+
+            $_SESSION['user'] = $user;
 
             return true;
         } else {
             $_SESSION['error'] = "Les identifiants fournis ne correspondent à aucun utilisateur";
+            $_SESSION['old_inputs'] = $_POST;
+
+            return false;
+        }
+    }
+
+    public function updateProfile(string $fullname, string $email, string $password, string $confirmPassword): bool
+    {
+        $user = new User();
+
+        $errors = $this->verifyLoginCredentials($user, $email, $password, $confirmPassword);
+
+        if (empty($errors)) {
+            unset($_SESSION['errors']);
+
+            $user->setFullname($fullname);
+            $user->setEmail($email);
+            $user->setPassword($password);
+
+            $user->update();
+
+            $_SESSION['user'] = $user;
+
+            return true;
+        }else {
+            $_SESSION['errors'] = $errors;
             $_SESSION['old_inputs'] = $_POST;
 
             return false;
@@ -104,6 +136,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }else {
             header("Location: ../../View/login.php");
         }
+        exit;
+    }
+
+    if (isset($_POST['form-name']) && $_POST['form-name'] === 'profile-form') {
+        $fullname = htmlspecialchars($_POST['fullname']);
+        $email = htmlspecialchars($_POST['email']);
+        $password = htmlspecialchars($_POST['password']);
+        $confirmPassword = htmlspecialchars($_POST["confirm-password"]);
+
+        $authentication->updateProfile($fullname, $email, $password, $confirmPassword);
+        header("Location: ../../View/profile.php");
         exit;
     }
 }

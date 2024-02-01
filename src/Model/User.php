@@ -13,13 +13,16 @@ class User
 
     private array $role = [];
 
+    private bool $state = false;
+
     public function __construct
     (
         ?int $id = null,
         ?string $fullname = null, ?
         string $email = null,
         ?string $password = null,
-        array $role = []
+        array $role = [],
+        bool $state = false
     )
     {
         $this->id = $id;
@@ -27,6 +30,7 @@ class User
         $this->email = $email;
         $this->password = $password;
         $this->role = $role;
+        $this->state = $state;
     }
 
     public function findOneById(int $id): false|User{
@@ -86,6 +90,7 @@ class User
         $stmt->execute();
 
         $this->setId((int)$pdo->lastInsertId());
+        $this->connect();
 
         return $this;
     }
@@ -94,15 +99,17 @@ class User
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
 
-        $stmt = $pdo->prepare("UPDATE user SET fullname = :fullname, email = :email, password = :password, role = :role WHERE id = :id");
+        $stmt = $pdo->prepare("UPDATE user SET fullname = :fullname, email = :email, password = :password, role = :role WHERE email = :email");
 
-        $stmt->bindValue(':id', $this->getId());
         $stmt->bindValue(':fullname', $this->getFullname());
         $stmt->bindValue(':email', $this->getEmail());
         $stmt->bindValue(':password', $this->getPassword());
-        $stmt->bindValue(':role', json_encode($this->getRole()));
+        $stmt->bindValue(':role', json_encode($this->setRole(['ROLE_USER'])));
 
         $stmt->execute();
+
+        $this->connect();
+        $this->setId($this->getIdByEmail($this->getEmail()));
 
         return $this;
     }
@@ -125,6 +132,17 @@ class User
             $result['password'],
             json_decode($result['role'], true)
         );
+    }
+
+    public function getIdByEmail(string $email): int
+    {
+        $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
+
+        $stmt = $pdo->prepare("SELECT id FROM user WHERE email = :email");
+        $stmt->bindValue(':email', $email, \PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC)['id'];
     }
 
     public function getId(): ?int
@@ -179,6 +197,23 @@ class User
     public function setRole(array $role): User
     {
         $this->role = $role;
+        return $this;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
+    }
+
+    public function connect(): User
+    {
+        $this->state = true;
+        return $this;
+    }
+
+    public function disconnect(): User
+    {
+        $this->state = false;
         return $this;
     }
 }

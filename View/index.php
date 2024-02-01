@@ -5,13 +5,9 @@ $dotenv->load();
 
 session_start();
 
-//$user = new \App\Model\User();
-//
-//$result = $user->findOneById(1);
-//var_dump($result);
-//
-//$allUsers = $user->findAll();
-//var_dump($allUsers);
+if (isset($_SESSION['user'])) {
+    $user = $_SESSION['user'];
+}
 ?>
 
 <!doctype html>
@@ -28,16 +24,25 @@ session_start();
     <body>
         <h1>Index</h1>
 
+        <button class="register-button">
+            <a href="register.php">Register</a>
+        </button>
+
+        <button class="login-button">
+            <a href="login.php">Login</a>
+        </button>
+
+        <button class="profile-button">
+            <a href="profile.php">Profile</a>
+        </button>
+
+        <button class="logout-button">
+            <a href="./logout.php">Logout</a>
+        </button>
+
         <?php if (isset($_SESSION['success'])) { ?>
             <p><?= $_SESSION['success']?></p>
-        <?php } ?>
-
-        <?php if (isset($_SESSION['user'])) { ?>
-            <p><?= $_SESSION['user']['id']?></p>
-            <p><?= $_SESSION['user']['fullname']?></p>
-            <p><?= $_SESSION['user']['email']?></p>
-            <p><?= ($_SESSION['user']['role'][0]); ?></p>
-            <p><?= $_SESSION['user']['state']?></p>
+            <?php unset($_SESSION['success']); ?>
         <?php } ?>
     </body>
 </html>

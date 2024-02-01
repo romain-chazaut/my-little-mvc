@@ -6,8 +6,13 @@ $dotenv->load();
 
 session_start();
 
-$oldInputs = $_SESSION['old_inputs'] ?? [];
-unset($_SESSION['old_inputs']);
+if (isset($_SESSION['user'])) {
+    $user = $_SESSION['user'];
+    if ($user->getState() == 1) {
+        header('Location: index.php');
+        exit();
+    }
+}
 ?>
 
 <!doctype html>
@@ -19,6 +24,7 @@ unset($_SESSION['old_inputs']);
 
         <title>Register</title>
 
+        <script defer src="../public/assets/js/togglePassword.js"></script>
     </head>
     <body>
         <div class="register-form_container">
@@ -28,16 +34,18 @@ unset($_SESSION['old_inputs']);
                 <input type="hidden" name="form-name" value="register-form">
 
                 <label for="fullname">Fullname</label>
-                <input type="text" name="fullname" id="fullname" placeholder="Fullname" value="<?php echo (empty($oldInputs)) ? '' : $oldInputs['fullname'] ?>" required>
+                <input type="text" name="fullname" id="fullname" placeholder="Fullname" value="<?= (isset($_SESSION['old_inputs']) ? $_SESSION['old_inputs']['fullname'] : '') ?>" required>
 
                 <label for="email">Email</label>
-                <input type="email" name="email" id="email" placeholder="Email" value="<?php echo (empty($oldInputs)) ? '' : $oldInputs['email'] ?>" required>
+                <input type="email" name="email" id="email" placeholder="Email" value="<?= (isset($_SESSION['old_inputs']) ? $_SESSION['old_inputs']['email'] : ''); unset($_SESSION['old_inputs']) ?>" required>
 
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" placeholder="Password" required>
+                <input class="password" type="password" name="password" id="password" placeholder="Password" required>
 
                 <label for="confirm-password">Confirm Password</label>
-                <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
+                <input class="password" type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
+
+                <button type="button" id="toggle-password">Show</button>
 
                 <button type="submit">Register</button>
             </form>
@@ -49,6 +57,10 @@ unset($_SESSION['old_inputs']);
                     <?php endforeach; ?>
                 </div>
             <?php } ?>
+
+            <button class="login-button">
+                <a href="login.php">Login</a>
+            </button>
         </div>
     </body>
 </html>
