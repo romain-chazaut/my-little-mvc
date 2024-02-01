@@ -1,104 +1,85 @@
 <?php
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
+// Initialisation de Dotenv pour charger les variables d'environnement
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
 $dotenv->load();
 
-$cloth = new \App\Model\Clothing();
-$electronic = new \App\Model\Electronic();
+// Supposons que vous avez une classe Product qui inclut une méthode findPaginated
+// et une méthode pour compter le total des produits pour la pagination
+$productModel = new \App\Model\Product(); // Assurez-vous que cette classe existe
 
-$clothTab = $cloth->findAll();
-$electronicTab = $electronic->findAll();
+// Récupération du numéro de la page depuis l'URL, avec 1 comme valeur par défaut
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
-// appelez la méthode index (ShopController) en passant en paramètre la valeur du paramètre d’URL ‘page’.
-
+// Récupération des produits paginés et du nombre total de produits
+$products = $productModel->findPaginated($page, 5); // 5 produits par page
+$totalProducts = $productModel->count(); // Méthode pour compter le total des produits
+$totalPages = ceil($totalProducts / 5);
 
 ?>
 
 <!doctype html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>RAM SHOP</title>
-    </head>
-
-    <body>
-        <h1>Tableau des produits de clothing</h1>
-        <table>
-            <thead>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RAM SHOP</title>
+</head>
+<body>
+    <h1>Produits Paginés</h1>
+    <table>
+        <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Nom</th>
                 <th>Photos</th>
-                <th>Price</th>
+                <th>Prix</th>
                 <th>Description</th>
-                <th>Quantity</th>
-                <th>Category_id</th>
-                <th>Created_at</th>
-                <th>Updated_at</th>
-                <th>Size</th>
-                <th>Color</th>
-                <th>Type</th>
+                <th>Quantité</th>
+                <th>Catégorie</th>
+                <th>Date de création</th>
+                <th>Date de mise à jour</th>
             </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($clothTab as $cloth) { ?>
-                    <tr>
-                        <td><?php echo $cloth->getId() ?></td>
-                        <td><?php echo $cloth->getName() ?></td>
-                        <td><?php echo $cloth->getPhotos() ?></td>
-                        <td><?php echo $cloth->getPrice() ?></td>
-                        <td><?php echo $cloth->getDescription() ?></td>
-                        <td><?php echo $cloth->getQuantity() ?></td>
-                        <td><?php echo $cloth->getCategoryId() ?></td>
-                        <td><?php echo $cloth->getCreatedAt() ?></td>
-                        <td><?php echo $cloth->getUpdatedAt() ?></td>
-                        <td><?php echo $cloth->getSize() ?></td>
-                        <td><?php echo $cloth->getColor() ?></td>
-                        <td><?php echo $cloth->getType() ?></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-
-        <h1>Tableau des produits de electronic</h1>
-        <table>
-            <thead>
+        </thead>
+        <tbody>
+        <?php foreach ($products as $product): ?>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Photos</th>
-                <th>Price</th>
-                <th>Description</th>
-                <th>Quantity</th>
-                <th>Category_id</th>
-                <th>Created_at</th>
-                <th>Updated_at</th>
-                <th>Waranty_fee</th>
-                <th>Brand</th>
-
+                <td><?= htmlspecialchars($product['id'] ?? '') ?></td>
+                <td><?= htmlspecialchars($product['name'] ?? '') ?></td>
+                <td><?= htmlspecialchars($product['photos'] ?? '') ?></td>
+                <td><?= htmlspecialchars($product['price'] ?? '') ?></td>
+                <td><?= htmlspecialchars($product['description'] ?? '') ?></td>
+                <td><?= htmlspecialchars($product['quantity'] ?? '') ?></td>
+                <td><?= htmlspecialchars($product['category_id'] ?? '') ?></td>
+                <td><?= htmlspecialchars($product['created_at'] ?? '') ?></td>
+                <td><?= htmlspecialchars($product['updated_at'] ?? '') ?></td>
             </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($electronicTab as $electronic) { ?>
-                    <tr>
-                        <td><?php echo $electronic->getId() ?></td>
-                        <td><?php echo $electronic->getName() ?></td>
-                        <td><?php echo $electronic->getPhotos() ?></td>
-                        <td><?php echo $electronic->getPrice() ?></td>
-                        <td><?php echo $electronic->getDescription() ?></td>
-                        <td><?php echo $electronic->getQuantity() ?></td>
-                        <td><?php echo $electronic->getCategoryId() ?></td>
-                        <td><?php echo $electronic->getCreatedAt() ?></td>
-                        <td><?php echo $electronic->getUpdatedAt() ?></td>
-                        <td><?php echo $electronic->getWarantyFee() ?></td>
-                        <td><?php echo $electronic->getBrand() ?></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-    </body>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+<!-- Pagination -->
+<!-- Pagination -->
+<div class="pagination">
+    <!-- Bouton Précédent -->
+    <?php if ($page > 1): ?>
+        <a class="pagination-button" href="?page=<?= $page - 1 ?>" aria-label="Previous">Précédent</a>
+    <?php endif; ?>
+
+    <!-- Liens des Numéros de Page -->
+    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+        <a class="pagination-button <?= ($i == $page) ? 'active' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+    <?php endfor; ?>
+
+    <!-- Bouton Suivant -->
+    <?php if ($page < $totalPages): ?>
+        <a class="pagination-button" href="?page=<?= $page + 1 ?>" aria-label="Next">Suivant</a>
+    <?php endif; ?>
+</div>
+
+
+</body>
 </html>

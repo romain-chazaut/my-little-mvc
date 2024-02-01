@@ -9,23 +9,33 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 class ShopController
 {
-    public function __construct()
+    private $productModel;
+
+    public function __construct(Product $productModel)
     {
-        // Initialisation de Dotenv
+        // Assurez-vous que Dotenv est nécessaire ici. Si votre application charge Dotenv ailleurs,
+        // par exemple, dans un fichier bootstrap ou index.php, cette ligne peut être redondante.
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
         $dotenv->load();
+
+        $this->productModel = $productModel;
     }
 
     public function index($page = 1)
     {
-        // Création de l'instance de Product
-        $productModel = new Product();
-        
-        // Récupération des produits paginés
-        $products = $productModel->findPaginated($page);
-        
-        // Ici, vous devriez normalement passer les produits à une vue.
-        // Pour cet exemple, nous allons simplement les imprimer.
-        echo '<pre>', print_r($products, true), '</pre>';
+        // Validation du numéro de page
+        if (!filter_var($page, FILTER_VALIDATE_INT) || $page < 1) {
+            $page = 1;
+        }
+
+        // Supposons que findPaginated retourne un tableau de produits et potentiellement
+        // des informations de pagination (comme le nombre total de pages).
+        $paginationResult = $this->productModel->findPaginated($page);
+        $products = $paginationResult['product'];
+        $totalPages = $paginationResult['totalPages']; // Assurez-vous que votre modèle retourne cette information.
+
+        // Passer les produits et les informations de pagination à la vue.
+        // Vous pouvez également passer d'autres données nécessaires pour le rendu de la vue.
+        require __DIR__ . '/../../views/shop.php';
     }
 }

@@ -4,24 +4,50 @@ namespace App\Model;
 
 use App\Model\Abstract\AbstractProduct;
 use PDO;
+use PDOException;
 
 class Product extends AbstractProduct
 {
-    public function findPaginated(int $page, int $limit = 10): array
+    private $pdo;
+
+    public function __construct()
     {
-        // Calcul de l'offset basé sur le numéro de page et la limite
+        try {
+            $this->pdo = new PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            // Dans une application réelle, vous pourriez vouloir logger cette erreur
+            // et afficher un message d'erreur générique à l'utilisateur.
+            error_log('Erreur de connexion à la base de données : ' . $e->getMessage());
+            die('Une erreur est survenue lors de la connexion à la base de données.');
+        }
+    }
+
+    public function findPaginated(int $page, int $limit = 5): array
+    {
         $offset = ($page - 1) * $limit;
         
-        // Connexion à la base de données
-        $pdo = new PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
-        
-        // Préparation et exécution de la requête
-        $stmt = $pdo->prepare("SELECT * FROM products LIMIT :limit OFFSET :offset");
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $stmt->execute();
-        
-        // Retour des résultats
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $stmt = $this->pdo->prepare("SELECT * FROM product LIMIT :limit OFFSET :offset");
+            // BindParam attend une référence de variable, donc utilisez bindValue ici
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Erreur lors de la récupération des produits : ' . $e->getMessage());
+            return []; // Retourne un tableau vide en cas d'erreur
+        }
+    }
+
+    public function count(): int
+    {
+        try {
+            $stmt = $this->pdo->query("SELECT COUNT(*) FROM product");
+            return (int) $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            error_log('Erreur lors du comptage des produits : ' . $e->getMessage());
+            return 0; // Retourne 0 en cas d'erreur
+        }
     }
 }
