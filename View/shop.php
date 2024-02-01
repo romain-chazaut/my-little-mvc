@@ -29,7 +29,7 @@ $totalPages = ceil($totalProducts / 5);
     <title>RAM SHOP</title>
 </head>
 <body>
-    <h1>Produits Paginés</h1>
+    <h1>Nos produits</h1>
     <table>
         <thead>
             <tr>
@@ -72,7 +72,7 @@ $totalPages = ceil($totalProducts / 5);
 
     <!-- Liens des Numéros de Page -->
     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-        <a class="number-button <?= ($i == $page) ? 'active' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+        <a class="number-button" <?= ($i == $page) ? 'active' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
     <?php endfor; ?>
 
     <!-- Bouton Suivant -->
