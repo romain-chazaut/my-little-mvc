@@ -23,7 +23,10 @@ unset($_SESSION['old_inputs']);
     <body>
         <div class="register-form_container">
             <h1>Register</h1>
-            <form action="../src/Controller/AuthenticationController.php" method="post" class="register-form">
+
+            <form action="../src/Controller/AuthenticationController.php" method="post" class="register-form" name="register-form">
+                <input type="hidden" name="form-name" value="register-form">
+
                 <label for="fullname">Fullname</label>
                 <input type="text" name="fullname" id="fullname" placeholder="Fullname" value="<?php echo (empty($oldInputs)) ? '' : $oldInputs['fullname'] ?>" required>
 
@@ -33,8 +36,12 @@ unset($_SESSION['old_inputs']);
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" placeholder="Password" required>
 
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
+
                 <button type="submit">Register</button>
             </form>
+
             <?php if (isset($_SESSION['errors'])) { ?>
                 <div class="errors">
                     <?php foreach ($_SESSION['errors'] as $error): ?>

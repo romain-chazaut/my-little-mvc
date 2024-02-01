@@ -107,17 +107,24 @@ class User
         return $this;
     }
 
-    function findOneByEmail(string $email) : bool {
+    function findOneByEmail(string $email) : false|User {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
-        $stmt = $pdo->prepare("SELECT id FROM user WHERE email = :email");
+        $stmt = $pdo->prepare("SELECT * FROM user WHERE email = :email");
         $stmt->bindValue(':email', $email, \PDO::PARAM_STR);
         $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if ($stmt->rowCount() > 0) {
-            return true;
-        }else {
+        if (!$result) {
             return false;
         }
+
+        return new User(
+            $result['id'],
+            $result['fullname'],
+            $result['email'],
+            $result['password'],
+            json_decode($result['role'], true)
+        );
     }
 
     public function getId(): ?int
