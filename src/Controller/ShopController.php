@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Model;
+namespace App\Controller;
 
-use Model\Abstract\AbstractProduct;
+use App\Model\Product;
+use Dotenv\Dotenv;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -15,6 +16,16 @@ class ShopController
         $dotenv->load();
     }
 
+    public function index($page = 1)
+    {
+        // Création de l'instance de Product
+        $productModel = new Product();
+        
+        // Récupération des produits paginés
+        $products = $productModel->findPaginated($page);
+        
+        // Ici, vous devriez normalement passer les produits à une vue.
+        // Pour cet exemple, nous allons simplement les imprimer.
+        echo '<pre>', print_r($products, true), '</pre>';
+    }
 }
-
-// faire une méthode index($page), elle devra faire appel à une méthode findPaginated($page) qui sera dans une classe Product qui héritera de AbstractProduct sans autre propriété ou méthode pour le moment.
