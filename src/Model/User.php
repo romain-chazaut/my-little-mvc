@@ -29,7 +29,7 @@ class User
         $this->role = $role;
     }
 
-    public function findOneById(int $id): ?User{
+    public function findOneById(int $id): false|User{
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
         $stmt = $pdo->prepare('SELECT * from user where id = :id');
         $stmt->bindParam(':id', $id,\PDO::PARAM_INT);
@@ -105,6 +105,19 @@ class User
         $stmt->execute();
 
         return $this;
+    }
+
+    function findOneByEmail(string $email) : bool {
+        $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
+        $stmt = $pdo->prepare("SELECT id FROM user WHERE email = :email");
+        $stmt->bindValue(':email', $email, \PDO::PARAM_STR);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }else {
+            return false;
+        }
     }
 
     public function getId(): ?int
