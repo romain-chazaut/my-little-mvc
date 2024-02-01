@@ -7,34 +7,41 @@ body {
     font-family: 'Space Grotesk', sans-serif;
   }
   
-  p, h1 {
-    color: white;
-  }
+p, h1 {
+  color: white;
+}
 
-  table {
-    padding: 30px;
-  }
+table {
+  padding: 30px;
+  margin: 0 auto;
+}
 
-  thead {
-    background-color: #A238FF;
-    color: white;
-  }
+table tbody {
+  padding-top: 30px;
+}
 
-  table tr {
-    padding-bottom: 20px;
-  }
+table thead {
+  background-color: #A238FF;
+  color: white;
+  display: table-header-group;
+  padding: 10px 0 10px 0;
+}
 
-  table th {
-    color: white;
-  }
+table tr {
+  padding-bottom: 20px;
+}
 
-  table td {
-    color: white;
-  }
+table th {
+  color: white;
+}
 
-  a {
-    text-decoration: none;
-  }
+table td {
+  color: white;
+}
+
+a {
+  text-decoration: none;
+}
 
 .pagination-button {
     padding: 10px 15px 10px 15px;

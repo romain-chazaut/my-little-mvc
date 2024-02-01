@@ -36,12 +36,8 @@ $totalPages = ceil($totalProducts / 5);
                 <th>Id</th>
                 <th>Nom</th>
                 <th>Photos</th>
-                <th>Prix</th>
                 <th>Description</th>
-                <th>Quantité</th>
-                <th>Catégorie</th>
-                <th>Date de création</th>
-                <th>Date de mise à jour</th>
+                <th>Prix</th>
             </tr>
         </thead>
         <tbody>
@@ -50,19 +46,13 @@ $totalPages = ceil($totalProducts / 5);
                 <td><?= htmlspecialchars($product['id'] ?? '') ?></td>
                 <td><?= htmlspecialchars($product['name'] ?? '') ?></td>
                 <td><?= htmlspecialchars($product['photos'] ?? '') ?></td>
-                <td><?= htmlspecialchars($product['price'] ?? '') ?></td>
                 <td><?= htmlspecialchars($product['description'] ?? '') ?></td>
-                <td><?= htmlspecialchars($product['quantity'] ?? '') ?></td>
-                <td><?= htmlspecialchars($product['category_id'] ?? '') ?></td>
-                <td><?= htmlspecialchars($product['created_at'] ?? '') ?></td>
-                <td><?= htmlspecialchars($product['updated_at'] ?? '') ?></td>
+                <td><?= htmlspecialchars($product['price'] ?? '') ?> €</td>
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
 
-    <!-- Pagination -->
-<!-- Pagination -->
 <!-- Pagination -->
 <div class="pagination">
     <!-- Bouton Précédent -->
@@ -80,7 +70,6 @@ $totalPages = ceil($totalProducts / 5);
         <a class="pagination-button" href="?page=<?= $page + 1 ?>" aria-label="Next">Suivant</a>
     <?php endif; ?>
 </div>
-
 
 </body>
 </html>
