@@ -13,7 +13,10 @@ if (isset($_GET['product_id']) && isset($_GET['type'])) {
             $result = $electronic->findOneById($id_product);
             if ($result !== false) {
                 // afficher info produit
-                echo $result->getName();
+                echo "Nom: " . $result->getName() . "<br>";
+                echo "Marque: " . $result->getBrand() . "<br>";
+                echo "Description: " . $result->getDescription() . "<br>";
+                echo "Prix: " . $result->getPrice() . " €" . "<br>";
             } else {
                 echo "Le produit n'existe pas.";
             }
@@ -21,7 +24,12 @@ if (isset($_GET['product_id']) && isset($_GET['type'])) {
             $clothing = new \App\Model\Clothing();
             $result = $clothing->findOneById($id_product);
             if ($result !== false) {
-                echo $result->getName();
+                echo "Nom: " . $result->getName() . "<br>";
+                echo "Type: " . $result->getType() . "<br>";
+                echo "Description: " . $result->getDescription() . "<br>";
+                echo "Taille: " . $result->getSize() . "<br>";
+                echo "Couleur: " . $result->getColor() . "<br>";
+                echo "Prix: " . $result->getPrice() . " €" . "<br>";
             } else {
                 echo "Le produit n'existe pas.";
             }
