@@ -25,6 +25,7 @@ $totalPages = ceil($totalProducts / 5);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../style.css">
     <title>RAM SHOP</title>
 </head>
 <body>
@@ -71,7 +72,7 @@ $totalPages = ceil($totalProducts / 5);
 
     <!-- Liens des Numéros de Page -->
     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-        <a class="pagination-button <?= ($i == $page) ? 'active' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+        <a class="number-button <?= ($i == $page) ? 'active' : '' ?>" href="?page=<?= $i ?>"><?= $i ?></a>
     <?php endfor; ?>
 
     <!-- Bouton Suivant -->

@@ -10,3 +10,12 @@ body {
   p, h1 {
     color: white;
   }
+
+  table th {
+    color: white;
+  }
+
+
+  table td {
+    color: white;
+  }
