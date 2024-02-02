@@ -123,7 +123,7 @@ $totalPages = ceil($totalProducts / 5);
                 echo "<p>Prix: " . $product->getPrice() . "</p>";
                 echo "<p>Description: " . $product->getDescription() . "</p>";
                 echo "<p>Quantité: " . $product->getQuantity() . "</p>";
-                echo "<p>Catégorie: " . $product->getCategory() . "</p>";
+                echo "<p>Catégorie: " . $product->getCategory()->getName() . "</p>";
                 echo "<p>Date de création: " . $product->getCreatedAt() . "</p>";
                 echo "<p>Date de mise à jour: " . $product->getUpdatedAt() . "</p>";
                 unset($_SESSION['product']);

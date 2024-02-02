@@ -46,28 +46,38 @@ class ShopController
 
     public function showProduct(int $id_product, string $product_type)
     {
-     if (isset($_SESSION['user'])) {
-         $user = $_SESSION['user'];
-         if ($user->getState()) {
-             if ($product_type == 'electronic') {
-                 $electronic = new Electronic();
-                 $result = $electronic->findOneById($id_product);
-                 if ($result !== false) {
-                     return $result;
-                 } else {
-                     return false;
-                 }
-             } elseif ($product_type == 'clothing') {
-                 $clothing = new Clothing();
-                 $result = $clothing->findOneById($id_product);
-                 if ($result !== false) {
-                     return $result;
-                 } else {
-                     return false;
-                 }
-             }
-         }
-     }
+        if (isset($_SESSION['user'])) {
+            $user = $_SESSION['user'];
+            if ($user->getState() == 1) {
+                if ($product_type == 'electronic') {
+                    $electronic = new Electronic();
+                    $result = $electronic->findOneById($id_product);
+                    if ($result !== false) {
+                        return $result;
+                    } else {
+                        return false;
+                    }
+                } elseif ($product_type == 'clothing') {
+                    $clothing = new Clothing();
+                    $result = $clothing->findOneById($id_product);
+                    if ($result !== false) {
+                        return $result;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                $_SESSION['error'] = "Connectez-vous pour accéder au profil";
+                header('Location: ../../View/login.php');
+                return false;
+            }
+        }else {
+            $_SESSION['error'] = "Connectez-vous pour accéder au profil";
+            header('Location: ../../View/login.php');
+            return false;
+        }
     }
 }
 

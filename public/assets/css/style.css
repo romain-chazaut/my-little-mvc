@@ -132,10 +132,10 @@ table td {
     margin: 0 10px 0 10px;
 }
 
-&:hover {
-    background-color: #A238FF;
-    color: #A238FF;
-}
+/*&:hover {*/
+/*    background-color: #A238FF;*/
+/*    color: #A238FF;*/
+/*}*/
 
 .number-button {
     color: white;
