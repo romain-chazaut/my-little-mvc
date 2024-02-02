@@ -85,7 +85,6 @@ tbody td {
 
 .pagination-right {
     text-align: start;
-=======
   }
   
 p, h1 {
@@ -120,30 +119,24 @@ table td {
   color: white;
 }
 
-a {
-    text-decoration: none;
+.pagination-button {
+    padding: 10px 15px 10px 15px;
+    width: 68%;
+    border: 1px solid #5e5e5e;
+    border-radius: 15px;
+    background-color: transparent;
+    color: white;
+    text-transform: uppercase;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    margin: 0 10px 0 10px;
 }
 
-/*.pagination-button {*/
-/*    padding: 10px 15px 10px 15px;*/
-/*    width: 68%;*/
-/*    border: 1px solid #5e5e5e;*/
-/*    border-radius: 15px;*/
-/*    background-color: transparent;*/
-/*    color: white;*/
-/*    text-transform: uppercase;*/
-/*    font-family: 'Space Grotesk', sans-serif;*/
-/*    cursor: pointer;*/
-/*    margin: 0 10px 0 10px;*/
+&:hover {
+    background-color: #A238FF;
+    color: #A238FF;
+}
 
-/*    &:hover {*/
-/*        background-color: #A238FF;*/
-/*    }*/
-/*}*/
-
-/*.number-button {*/
-/*    color: white;*/
-
-/*    &:hover {*/
-/*        color: #A238FF;*/
-/*    }*/
+.number-button {
+    color: white;
+}

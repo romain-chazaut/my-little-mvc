@@ -41,7 +41,7 @@ class AuthenticationController
             $errors[] = "Cet email est déjà utilisé. Veuillez en choisir un autre.";
         }
 
-        $passwordPattern = "/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/";
+        $passwordPattern = "/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_-])[A-Za-z\d@$!%*?&_-]{8,}$/";
         if (!preg_match($passwordPattern, $password)) {
             $errors[] = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.";
         }
