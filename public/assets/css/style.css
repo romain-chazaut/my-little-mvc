@@ -5,17 +5,83 @@ body {
     text-align: center;
     background-color: #1B191F;
     font-family: 'Space Grotesk', sans-serif;
-  }
-  
-  p, h1 {
     color: white;
-  }
+}
 
-  table th {
+p, h1 {
     color: white;
-  }
+}
 
+a {
+    text-decoration: none;
+}
 
-  table td {
+table {
+    width: 95%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    font-size: 14px;
+}
+
+table th {
     color: white;
-  }
+}
+
+thead {
+    background-color: #333;
+}
+
+thead th {
+    padding: 10px;
+    text-align: left;
+}
+
+table td {
+    color: white;
+}
+
+tbody {
+    text-align: left;
+}
+
+tbody tr:hover {
+    background-color: #555;
+}
+
+tbody td {
+    padding: 10px;
+    text-align: left;
+}
+
+.paginations {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pagination-button.active {
+    color: white;
+}
+
+.pagination-number a{
+    color: white;
+}
+
+.pagination a {
+    color: grey;
+}
+
+.pagination {
+    min-width: 100px;
+}
+
+.pagination-left {
+    text-align: end;
+}
+
+.pagination-right {
+    text-align: start;
+}

@@ -1,11 +1,16 @@
 <?php
-
 namespace App\Controller;
 
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use App\Model\Clothing;
+use App\Model\Electronic;
 use App\Model\Product;
 use Dotenv\Dotenv;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+if (!isset($_SESSION)) {
+    session_start();
+}
 
 class ShopController
 {
@@ -37,5 +42,53 @@ class ShopController
         // Passer les produits et les informations de pagination à la vue.
         // Vous pouvez également passer d'autres données nécessaires pour le rendu de la vue.
         require __DIR__ . '/../../views/shop.php';
+    }
+
+    public function showProduct(int $id_product, string $product_type)
+    {
+     if (isset($_SESSION['user'])) {
+         $user = $_SESSION['user'];
+         if ($user->getState()) {
+             if ($product_type == 'electronic') {
+                 $electronic = new Electronic();
+                 $result = $electronic->findOneById($id_product);
+                 if ($result !== false) {
+                     return $result;
+                 } else {
+                     return false;
+                 }
+             } elseif ($product_type == 'clothing') {
+                 $clothing = new Clothing();
+                 $result = $clothing->findOneById($id_product);
+                 if ($result !== false) {
+                     return $result;
+                 } else {
+                     return false;
+                 }
+             }
+         }
+     }
+    }
+}
+
+/**
+ * Vérifie s'il y a une requête POST
+ * Instancie un objet AuthenticationController
+ * Appelle la méthode nécessaire en fonction de la valeur de $_POST['form-name']
+ */
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $shop = new ShopController(new Product());
+
+    if (isset($_POST['form-name']) && $_POST['form-name'] === 'show-product-form') {
+        $id_product = htmlspecialchars($_POST['id_product']);
+        $product_type = htmlspecialchars($_POST['product_type']);
+
+        $product = $shop->showProduct($id_product, $product_type);
+        if ($product !== false) {
+            $_SESSION['product'] = $product;
+        } else {
+            $_SESSION['error'] = 'Le produit n\'existe pas';
+        }
+        header('Location: ../../View/shop.php');
     }
 }

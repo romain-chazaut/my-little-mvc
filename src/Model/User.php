@@ -237,7 +237,7 @@ class User
     {
         return $this->role;
     }
-    public function getState(): string
+    public function getState(): bool
     {
         return $this->state;
     }
