@@ -27,20 +27,28 @@ if (isset($_SESSION['user'])) {
     <body>
         <h1>Index</h1>
 
+        <button class="shop-button">
+            <a href="View/shop.php">Shop</a>
+        </button>
+
+        <button class="product-button">
+            <a href="View/product.php">Product</a>
+        </button>
+
         <button class="register-button">
-            <a href="register.php">Register</a>
+            <a href="View/register.php">Register</a>
         </button>
 
         <button class="login-button">
-            <a href="login.php">Login</a>
+            <a href="View/login.php">Login</a>
         </button>
 
         <button class="profile-button">
-            <a href="profile.php">Profile</a>
+            <a href="View/profile.php">Profile</a>
         </button>
 
         <button class="logout-button">
-            <a href="./logout.php">Logout</a>
+            <a href="View/logout.php">Logout</a>
         </button>
 
         <?php if (isset($_SESSION['success'])) { ?>

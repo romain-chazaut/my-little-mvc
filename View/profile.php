@@ -66,7 +66,7 @@ if (isset($_SESSION['user'])) {
         <?php } ?>
 
         <button class="home-button">
-            <a href="index.php">Home</a>
+            <a href="../index.php">Home</a>
         </button>
     </body>
 </html>

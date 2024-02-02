@@ -29,7 +29,11 @@ $totalPages = ceil($totalProducts / 5);
     <title>RAM SHOP</title>
 </head>
 <body>
+
     <h1>Produits Paginés</h1>
+    <button class="home-button">
+        <a href="../index.php">home</a>
+    </button>
     <table>
         <thead>
             <tr>
