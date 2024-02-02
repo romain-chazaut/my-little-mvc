@@ -5,91 +5,60 @@ body {
     text-align: center;
     background-color: #1B191F;
     font-family: 'Space Grotesk', sans-serif;
-
-    color: white;
-}
-
-p, h1 {
-    color: white;
-}
-
-a {
-    text-decoration: none;
-}
-
-table {
-    width: 95%;
-    margin: 20px auto;
-    border-collapse: collapse;
-}
-
-table, th, td {
-    font-size: 14px;
-}
-
-table th {
-    color: white;
-}
-
-thead {
-    background-color: #333;
-}
-
-thead th {
-    padding: 10px;
-    text-align: left;
-}
-
-table td {
-    color: white;
-}
-
-tbody {
-    text-align: left;
-}
-
-tbody tr:hover {
-    background-color: #555;
-}
-
-tbody td {
-    padding: 10px;
-    text-align: left;
-}
-
-.paginations {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.pagination-button.active {
-    color: white;
-}
-
-.pagination-number a{
-    color: white;
-}
-
-.pagination a {
-    color: grey;
-}
-
-.pagination {
-    min-width: 100px;
-}
-
-.pagination-left {
-    text-align: end;
-}
-
-.pagination-right {
-    text-align: start;
+    padding: 40px;
   }
   
 p, h1 {
   color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
+
+label {
+  display: none;
+  color: white;
+  margin: 15px 0 5px 0;
+}
+
+a:visited {
+  color: white;
+}
+
+input {
+  margin-bottom: 20px;
+  width: 30%;
+  border: solid 1px transparent;
+  border-radius: 15px;
+  background-color: #A238FF;
+  padding: 10px 15px 10px 15px;
+  text-align: center;
+  color: white;
+}
+
+input::placeholder {
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
+}
+
+button {
+  padding: 10px 15px 10px 15px;
+  width: 32%;
+  border: 1px solid #5e5e5e;
+  border-radius: 15px;
+  background-color: transparent;
+  color: white;
+  text-transform: uppercase;
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+  margin-top: 30px;
+}
+
+button:hover {
+  background-color: #5e5e5e;
+}
+
+/* SHOP */
 
 table {
   padding: 30px;
@@ -101,7 +70,7 @@ table tbody {
 }
 
 table thead {
-  /*background-color: #A238FF;*/
+  background-color: #A238FF;
   color: white;
   display: table-header-group;
   padding: 10px 0 10px 0;
@@ -119,6 +88,10 @@ table td {
   color: white;
 }
 
+a {
+  text-decoration: none;
+}
+
 .pagination-button {
     padding: 10px 15px 10px 15px;
     width: 68%;
@@ -130,13 +103,25 @@ table td {
     font-family: 'Space Grotesk', sans-serif;
     cursor: pointer;
     margin: 0 10px 0 10px;
-}
 
-/*&:hover {*/
-/*    background-color: #A238FF;*/
-/*    color: #A238FF;*/
-/*}*/
+    &:hover {
+      background-color: #A238FF;
+    }
+  }
 
 .number-button {
-    color: white;
+  color: white;
+
+  &:hover {
+    color: #A238FF;
+  }
+}
+
+/* PROFILE */
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
