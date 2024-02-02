@@ -31,6 +31,8 @@ if (isset($_SESSION['user'])) {
 
         <title>Document</title>
 
+        <link rel="stylesheet" href="../public/assets/css/style.css">
+
         <script defer src="../public/assets/js/togglePassword.js"></script>
     </head>
 
