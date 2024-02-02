@@ -31,10 +31,6 @@ if (isset($_SESSION['user'])) {
             <a href="View/shop.php">Shop</a>
         </button>
 
-        <button class="product-button">
-            <a href="View/product.php">Product</a>
-        </button>
-
         <button class="register-button">
             <a href="View/register.php">Register</a>
         </button>
