@@ -8,7 +8,7 @@ body {
     padding: 40px;
   }
   
-p, h1 {
+p, h1, h2 {
   color: white;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -92,6 +92,11 @@ a {
   text-decoration: none;
 }
 
+.paginations {
+  display: flex;
+  justify-content: center;
+}
+
 .pagination-button {
     padding: 10px 15px 10px 15px;
     width: 68%;
@@ -105,7 +110,7 @@ a {
     margin: 0 10px 0 10px;
 
     &:hover {
-      background-color: #A238FF;
+      background-color: #5e5e5e;
     }
   }
 
@@ -117,11 +122,32 @@ a {
   }
 }
 
+.display-button {
+  padding: 10px 15px 10px 15px;
+  width: 100%;
+  border: 1px solid #5e5e5e;
+  border-radius: 15px;
+  background-color: transparent;
+  color: white;
+  text-transform: uppercase;
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+  margin-top: 30px;
+}
+
 /* PROFILE */
 
-.profile-form {
+.profile-form, form {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+
+/* BIENVENUE */
+
+.welcome-button {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }

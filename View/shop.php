@@ -47,7 +47,7 @@ $totalPages = ceil($totalProducts / 5);
     </head>
 
     <body>
-        <h1>Produits Paginés</h1>
+        <h1>Nos produits</h1>
         <button class="home-button">
             <a href="../index.php">home</a>
         </button>
@@ -83,7 +83,7 @@ $totalPages = ceil($totalProducts / 5);
                             <input type="hidden" name="form-name" value="show-product-form">
                             <input type="hidden" name="id_product" value="<?= $product['id'] ?>">
                             <input type="hidden" name="product_type" value="<?php if ($product['category_id'] == 1){echo 'clothing';}  else{echo 'electronic';} ?>">
-                            <button type="submit">Afficher</button>
+                            <button class="display-button" type="submit">Afficher</button>
                         </form>
                     </td>
                 </tr>
