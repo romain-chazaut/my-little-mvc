@@ -3,7 +3,13 @@ require_once '../vendor/autoload.php';
 
 use App\Model\User;
 
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+/**
+ *  Déconnecte l'utilisateur s'il est connecté et redirige vers la page de connexion
+ */
 
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];

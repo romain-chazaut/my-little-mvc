@@ -10,9 +10,29 @@ $dotenv->load();
 
 use App\Model\User;
 
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+/**
+ * Class AuthenticationController
+ *
+ * Gère l'authentification des utilisateurs
+ *
+ * @package App\Controller
+ */
 class AuthenticationController
 {
+    /**
+     * Vérifie les informations d'inscription et de mise à jour d'un utilisateur
+     * et retourne un tableau erreurs
+     *
+     * @param User $user
+     * @param string $email
+     * @param string $password
+     * @param string $confirmPassword
+     * @return array
+     */
     public function verifyLoginCredentials(User $user, string $email, string $password, string $confirmPassword): array
     {
         $errors = [];
@@ -32,6 +52,16 @@ class AuthenticationController
 
         return $errors;
     }
+
+    /**
+     * Créer un objet User puis l'insère dans la base de données avec create()
+     *
+     * @param string $fullname
+     * @param string $email
+     * @param string $password
+     * @param string $confirmPassword
+     * @return bool
+     */
     public function register(string $fullname, string $email, string $password, string $confirmPassword): bool
     {
         $user = new User();
@@ -60,6 +90,13 @@ class AuthenticationController
         }
     }
 
+    /**
+     * Récupère un utilisateur avec son email puis vérifie si le mot de passe correspond
+     *
+     * @param string $email
+     * @param string $password
+     * @return bool
+     */
     public function login(string $email, string $password): bool
     {
         $user = new User();
@@ -81,6 +118,15 @@ class AuthenticationController
         }
     }
 
+    /**
+     * Créer un objet User puis le met à jour dans la base de données avec update()
+     *
+     * @param string $fullname
+     * @param string $email
+     * @param string $password
+     * @param string $confirmPassword
+     * @return bool
+     */
     public function updateProfile(string $fullname, string $email, string $password, string $confirmPassword): bool
     {
         $user = new User();
@@ -108,7 +154,11 @@ class AuthenticationController
     }
 }
 
-
+/**
+ * Vérifie s'il y a une requête POST
+ * Instancie un objet AuthenticationController
+ * Appelle la méthode nécessaire en fonction de la valeur de $_POST['form-name']
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $authentication = new AuthenticationController();
 
@@ -149,4 +199,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: ../../View/profile.php");
         exit;
     }
+
+}
+function secure($valueToSecure)
+{
+    return htmlspecialchars($valueToSecure);
 }

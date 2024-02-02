@@ -4,8 +4,13 @@ require_once '../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
 $dotenv->load();
 
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 
+/**
+ * Redirige l'utilisateur vers la page d'accueil s'il est déjà connecté
+ */
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
     if ($user->getState() == 1) {

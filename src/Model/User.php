@@ -1,20 +1,55 @@
 <?php
-
 namespace App\Model;
 
+/**
+ * Class User
+ *
+ * Gère les utilisateurs
+ *
+ * @package App\Model
+ */
 class User
 {
+    /**
+     * @var int|null L'id de l'utilisateur
+     */
     private ?int $id = null;
+
+    /**
+     * @var string|null Le nom complet de l'utilisateur
+     */
     private ?string $fullname = null;
 
+    /**
+     * @var string|null L'email de l'utilisateur
+     */
     private ?string $email = null;
 
+    /**
+     * @var string|null Le mot de passe de l'utilisateur
+     */
     private ?string $password = null;
 
+    /**
+     * @var array Les rôles de l'utilisateur
+     */
     private array $role = [];
 
+    /**
+     * @var bool L'état de connexion de l'utilisateur
+     */
     private bool $state = false;
 
+    /**
+     * User constructor.
+     *
+     * @param int|null $id
+     * @param string|null $fullname
+     * @param string|null $email
+     * @param string|null $password
+     * @param array $role
+     * @param bool $state
+     */
     public function __construct
     (
         ?int $id = null,
@@ -33,6 +68,12 @@ class User
         $this->state = $state;
     }
 
+    /**
+     * Récupère un utilisateur avec son id puis créer un objet User avec les données récupérées
+     *
+     * @param int $id
+     * @return false|User
+     */
     public function findOneById(int $id): false|User{
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
         $stmt = $pdo->prepare('SELECT * from user where id = :id');
@@ -53,6 +94,37 @@ class User
         );
     }
 
+    /**
+     * Récupère un utilisateur avec son email puis crée un objet User avec les données récupérées
+     *
+     * @param string $email
+     * @return false|User
+     */
+    function findOneByEmail(string $email) : false|User {
+        $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
+        $stmt = $pdo->prepare("SELECT * FROM user WHERE email = :email");
+        $stmt->bindValue(':email', $email, \PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return false;
+        }
+
+        return new User(
+            $result['id'],
+            $result['fullname'],
+            $result['email'],
+            $result['password'],
+            json_decode($result['role'], true)
+        );
+    }
+
+    /**
+     * Récupère tous les utilisateurs puis crée un tableau d'objets User
+     *
+     * @return array
+     */
     public function findAll(): array
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -76,6 +148,11 @@ class User
         return $users;
     }
 
+    /**
+     * Enregistre un nouvel utilisateur dans la base de données et le connect()
+     *
+     * @return User
+     */
     public function create(): User
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -95,6 +172,11 @@ class User
         return $this;
     }
 
+    /**
+     * Met à jour les données de l'utilisateur dans la base de données
+     *
+     * @return User
+     */
     public function update(): User
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -114,26 +196,12 @@ class User
         return $this;
     }
 
-    function findOneByEmail(string $email) : false|User {
-        $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
-        $stmt = $pdo->prepare("SELECT * FROM user WHERE email = :email");
-        $stmt->bindValue(':email', $email, \PDO::PARAM_STR);
-        $stmt->execute();
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-        if (!$result) {
-            return false;
-        }
-
-        return new User(
-            $result['id'],
-            $result['fullname'],
-            $result['email'],
-            $result['password'],
-            json_decode($result['role'], true)
-        );
-    }
-
+    /**
+     * Récupère l'id d'un utilisateur avec son email
+     *
+     * @param string $email
+     * @return int
+     */
     public function getIdByEmail(string $email): int
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -149,60 +217,51 @@ class User
     {
         return $this->id;
     }
+    public function getFullname(): ?string
+    {
+        return $this->fullname;
+    }
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+    public function getRole(): array
+    {
+        return $this->role;
+    }
+    public function getState(): string
+    {
+        return $this->state;
+    }
 
     public function setId(?int $id): User
     {
         $this->id = $id;
         return $this;
     }
-
-    public function getFullname(): ?string
-    {
-        return $this->fullname;
-    }
-
     public function setFullname(?string $fullname): User
     {
         $this->fullname = $fullname;
         return $this;
     }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
     public function setEmail(?string $email): User
     {
         $this->email = $email;
         return $this;
     }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
     public function setPassword(?string $password): User
     {
         $this->password = $password;
         return $this;
     }
-
-    public function getRole(): array
-    {
-        return $this->role;
-    }
-
     public function setRole(array $role): User
     {
         $this->role = $role;
         return $this;
-    }
-
-    public function getState(): string
-    {
-        return $this->state;
     }
 
     public function connect(): User
@@ -210,7 +269,6 @@ class User
         $this->state = true;
         return $this;
     }
-
     public function disconnect(): User
     {
         $this->state = false;
