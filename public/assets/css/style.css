@@ -7,15 +7,63 @@ body {
     font-family: 'Space Grotesk', sans-serif;
   }
   
-  p, h1 {
+p, h1 {
+  color: white;
+}
+
+table {
+  padding: 30px;
+  margin: 0 auto;
+}
+
+table tbody {
+  padding-top: 30px;
+}
+
+table thead {
+  background-color: #A238FF;
+  color: white;
+  display: table-header-group;
+  padding: 10px 0 10px 0;
+}
+
+table tr {
+  padding-bottom: 20px;
+}
+
+table th {
+  color: white;
+}
+
+table td {
+  color: white;
+}
+
+a {
+  text-decoration: none;
+}
+
+.pagination-button {
+    padding: 10px 15px 10px 15px;
+    width: 68%;
+    border: 1px solid #5e5e5e;
+    border-radius: 15px;
+    background-color: transparent;
     color: white;
+    text-transform: uppercase;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    margin: 0 10px 0 10px;
+
+    &:hover {
+      background-color: #A238FF;
+    }
   }
 
-  table th {
-    color: white;
-  }
+.number-button {
+  color: white;
 
-
-  table td {
-    color: white;
+  &:hover {
+    color: #A238FF;
   }
+}
