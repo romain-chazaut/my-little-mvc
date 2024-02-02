@@ -8,13 +8,15 @@ use PDOException;
 
 class Product extends AbstractProduct
 {
-    private $pdo;
+    private \PDO $pdo;
 
     public function __construct()
     {
+        parent::__construct();
+
         try {
-            $this->pdo = new PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             // Dans une application réelle, vous pourriez vouloir logger cette erreur
             // et afficher un message d'erreur générique à l'utilisateur.
@@ -30,10 +32,10 @@ class Product extends AbstractProduct
         try {
             $stmt = $this->pdo->prepare("SELECT * FROM product LIMIT :limit OFFSET :offset");
             // BindParam attend une référence de variable, donc utilisez bindValue ici
-            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+            $stmt->bindValue(':limit', $limit, \PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log('Erreur lors de la récupération des produits : ' . $e->getMessage());
             return []; // Retourne un tableau vide en cas d'erreur
