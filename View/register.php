@@ -14,7 +14,7 @@ if (!isset($_SESSION)) {
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
     if ($user->getState() == 1) {
-        header('Location: index.php');
+        header('Location: ../index.php');
         exit();
     }
 }

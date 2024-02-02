@@ -167,7 +167,6 @@ class User
         $stmt->execute();
 
         $this->setId((int)$pdo->lastInsertId());
-        $this->connect();
 
         return $this;
     }
@@ -191,7 +190,7 @@ class User
         $stmt->execute();
 
         $this->connect();
-        $this->setId($this->getIdByEmail($this->getEmail()));
+        $this->setId($this->getIdByEmail($_SESSION['user']->getEmail()));
 
         return $this;
     }
@@ -200,9 +199,9 @@ class User
      * Récupère l'id d'un utilisateur avec son email
      *
      * @param string $email
-     * @return int
+     * @return int|bool
      */
-    public function getIdByEmail(string $email): int
+    public function getIdByEmail(string $email): int|bool
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
 
@@ -210,7 +209,12 @@ class User
         $stmt->bindValue(':email', $email, \PDO::PARAM_STR);
         $stmt->execute();
 
-        return $stmt->fetch(\PDO::FETCH_ASSOC)['id'];
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        if ($result === false) {
+            return false;
+        } else {
+            return $result['id'];
+        }
     }
 
     public function getId(): ?int

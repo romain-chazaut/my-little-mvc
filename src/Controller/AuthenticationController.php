@@ -101,20 +101,27 @@ class AuthenticationController
     {
         $user = new User();
         $user = $user->findOneByEmail($email);
-        $userpassword = $user->getPassword();
-        if ($userpassword == $password) {
-            $_SESSION['success'] = "Vous êtes connecté.";
-
-            $user->connect();
-
-            $_SESSION['user'] = $user;
-
-            return true;
-        } else {
+        if ($user === false) {
             $_SESSION['error'] = "Les identifiants fournis ne correspondent à aucun utilisateur";
             $_SESSION['old_inputs'] = $_POST;
 
             return false;
+        }else {
+            $userpassword = $user->getPassword();
+            if ($userpassword == $password) {
+                $_SESSION['success'] = "Vous êtes connecté.";
+
+                $user->connect();
+
+                $_SESSION['user'] = $user;
+
+                return true;
+            } else {
+                $_SESSION['error'] = "Les identifiants fournis ne correspondent à aucun utilisateur";
+                $_SESSION['old_inputs'] = $_POST;
+
+                return false;
+            }
         }
     }
 
@@ -182,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password = htmlspecialchars($_POST['password']);
 
         if ($authentication->login($email, $password)) {
-            header("Location: ../../View/index.php");
+            header("Location: ../../index.php");
         }else {
             header("Location: ../../View/login.php");
         }
@@ -200,8 +207,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-}
-function secure($valueToSecure)
-{
-    return htmlspecialchars($valueToSecure);
 }
