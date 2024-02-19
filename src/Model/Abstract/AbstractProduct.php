@@ -4,28 +4,73 @@ namespace App\Model\Abstract;
 
 use App\Model\Category;
 use DateTime;
+use Exception;
 
+/**
+ * Class AbstractProduct
+ * @package App\Model\Abstract
+ */
 abstract class AbstractProduct
 {
 
+    /**
+     * @var int|null
+     */
     protected ?int $id = null;
 
+    /**
+     * @var string|null
+     */
     protected ?string $name = null;
 
+    /**
+     * @var array|null|string
+     */
     protected null|array|string $photos = null;
 
+    /**
+     * @var int|null
+     */
     protected ?int $price = null;
 
+    /**
+     * @var string|null
+     */
     protected ?string $description = null;
 
+    /**
+     * @var int|null
+     */
     protected ?int $quantity = null;
 
+    /**
+     * @var int|null
+     */
     protected ?int $category_id = null;
 
+    /**
+     * @var DateTime|null
+     */
     protected ?\DateTime $createdAt = null;
 
+    /**
+     * @var DateTime|null
+     */
     protected ?\DateTime $updatedAt = null;
 
+    /**
+     * AbstractProduct constructor.
+     *
+     * @param int|null $id
+     * @param string|null $name
+     * @param array|null $photos
+     * @param int|null $price
+     * @param string|null $description
+     * @param int|null $quantity
+     * @param int|null $category_id
+     * @param DateTime|null $createdAt
+     * @param DateTime|null $updatedAt
+     */
     public function __construct(
         ?int       $id = null,
         ?string    $name = null,
@@ -49,141 +94,11 @@ abstract class AbstractProduct
         $this->updatedAt = $updatedAt;
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): AbstractProduct
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): AbstractProduct
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    public function getPhotos(): ?string
-    {
-        if (is_string($this->photos)) {
-            return $this->photos;
-        } elseif (is_array($this->photos)){
-            return implode(', ', $this->photos);
-        } else {
-            return 'Pas de photos';
-        }
-    }
-
-    public function setPhotos(?array $photos): AbstractProduct
-    {
-        $this->photos = $photos;
-        return $this;
-    }
-
-    public function getPrice(): ?int
-    {
-        return $this->price;
-    }
-
-    public function setPrice(?int $price): AbstractProduct
-    {
-        $this->price = $price;
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): AbstractProduct
-    {
-        $this->description = $description;
-        return $this;
-    }
-
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(?int $quantity): AbstractProduct
-    {
-        $this->quantity = $quantity;
-        return $this;
-    }
-
-    public function getCategoryId(): ?int
-    {
-        return $this->category_id;
-    }
-
-    public function setCategoryId(?int $category_id): AbstractProduct
-    {
-        $this->category_id = $category_id;
-        return $this;
-    }
-
-    public function getCreatedAt(): string|DateTime
-    {
-        if ($this->createdAt instanceof \DateTime) {
-            return $this->createdAt->format('Y-m-d H:i:s');
-        } else {
-            return 'ya problème chef';
-        }
-    }
-
-    public function setCreatedAt(?\DateTime $createdAt): AbstractProduct
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    public function getUpdatedAt(): string|DateTime
-    {
-        if ($this->updatedAt instanceof \DateTime) {
-            return $this->updatedAt->format('Y-m-d H:i:s');
-        } else {
-            return 'Pas de date de mise à jour';
-        }
-    }
-
-
-    public function setUpdatedAt(?\DateTime $updatedAt): AbstractProduct
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    public function getCategory(): Category|false
-    {
-        $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
-        $sql = "SELECT * FROM category WHERE id = :id";
-        $statement = $pdo->prepare($sql);
-        $statement->bindValue(':id', $this->category_id);
-        $statement->execute();
-        $category = $statement->fetch(\PDO::FETCH_ASSOC);
-        if ($category) {
-            return new Category(
-                $category['id'],
-                $category['name'],
-                $category['description'],
-                new \DateTime($category['created_at']),
-                $category['updated_at'] ? (new \DateTime($category['updated_at'])) : null
-            );
-        }
-
-        return false;
-    }
-
+    /**
+     * @param int $id
+     * @return static|false
+     * @throws Exception
+     */
     public function findOneById(int $id): static|false
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -209,6 +124,10 @@ abstract class AbstractProduct
         return false;
     }
 
+    /**
+     * @return array
+     * @throws Exception
+     */
     public function findAll(): array
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -234,6 +153,10 @@ abstract class AbstractProduct
         return $results;
     }
 
+    /**
+     * @return static
+     * @throws Exception
+     */
     public function create(): static
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -252,6 +175,10 @@ abstract class AbstractProduct
         return $this;
     }
 
+    /**
+     * @return static
+     * @throws Exception
+     */
     public function update(): static
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -269,4 +196,119 @@ abstract class AbstractProduct
         return $this;
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+    public function setId(?int $id): AbstractProduct
+    {
+        $this->id = $id;
+        return $this;
+    }
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+    public function setName(?string $name): AbstractProduct
+    {
+        $this->name = $name;
+        return $this;
+    }
+    public function getPhotos(): ?string
+    {
+        if (is_string($this->photos)) {
+            return $this->photos;
+        } elseif (is_array($this->photos)){
+            return implode(', ', $this->photos);
+        } else {
+            return 'Pas de photos';
+        }
+    }
+    public function setPhotos(?array $photos): AbstractProduct
+    {
+        $this->photos = $photos;
+        return $this;
+    }
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+    public function setPrice(?int $price): AbstractProduct
+    {
+        $this->price = $price;
+        return $this;
+    }
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+    public function setDescription(?string $description): AbstractProduct
+    {
+        $this->description = $description;
+        return $this;
+    }
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+    public function setQuantity(?int $quantity): AbstractProduct
+    {
+        $this->quantity = $quantity;
+        return $this;
+    }
+    public function getCategoryId(): ?int
+    {
+        return $this->category_id;
+    }
+    public function setCategoryId(?int $category_id): AbstractProduct
+    {
+        $this->category_id = $category_id;
+        return $this;
+    }
+    public function getCreatedAt(): string|DateTime
+    {
+        if ($this->createdAt instanceof \DateTime) {
+            return $this->createdAt->format('Y-m-d H:i:s');
+        } else {
+            return 'ya problème chef';
+        }
+    }
+    public function setCreatedAt(?\DateTime $createdAt): AbstractProduct
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+    public function getUpdatedAt(): string|DateTime
+    {
+        if ($this->updatedAt instanceof \DateTime) {
+            return $this->updatedAt->format('Y-m-d H:i:s');
+        } else {
+            return 'Pas de date de mise à jour';
+        }
+    }
+    public function setUpdatedAt(?\DateTime $updatedAt): AbstractProduct
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+    public function getCategory(): Category|false
+    {
+        $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
+        $sql = "SELECT * FROM category WHERE id = :id";
+        $statement = $pdo->prepare($sql);
+        $statement->bindValue(':id', $this->category_id);
+        $statement->execute();
+        $category = $statement->fetch(\PDO::FETCH_ASSOC);
+        if ($category) {
+            return new Category(
+                $category['id'],
+                $category['name'],
+                $category['description'],
+                new \DateTime($category['created_at']),
+                $category['updated_at'] ? (new \DateTime($category['updated_at'])) : null
+            );
+        }
+
+        return false;
+    }
 }

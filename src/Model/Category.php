@@ -219,51 +219,42 @@ class Category
     {
         return $this->id;
     }
-
     public function setId(?int $id): Category
     {
         $this->id = $id;
         return $this;
     }
-
     public function getName(): ?string
     {
         return $this->name;
     }
-
     public function setName(?string $name): Category
     {
         $this->name = $name;
         return $this;
     }
-
     public function getDescription(): ?string
     {
         return $this->description;
     }
-
     public function setDescription(?string $description): Category
     {
         $this->description = $description;
         return $this;
     }
-
     public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
-
     public function setCreatedAt(?\DateTime $createdAt): Category
     {
         $this->createdAt = $createdAt;
         return $this;
     }
-
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
-
     public function setUpdatedAt(?\DateTime $updatedAt): Category
     {
         $this->updatedAt = $updatedAt;
