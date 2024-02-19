@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Model\Abstract\AbstractProduct;
 use App\Model\Interface\StockableInterface;
+use Exception;
 
 /**
  * Class Clothing
@@ -74,6 +75,7 @@ class Clothing extends AbstractProduct implements StockableInterface
      *
      * @param int $id
      * @return static|false
+     * @throws Exception
      */
     public function findOneById(int $id): static|false
     {
@@ -105,6 +107,7 @@ class Clothing extends AbstractProduct implements StockableInterface
      * Récupère tous les vêtements
      *
      * @return array
+     * @throws Exception
      */
     public function findAll(): array
     {
