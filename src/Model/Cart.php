@@ -1,14 +1,37 @@
 <?php
 namespace App\Model;
 
+/**
+ * Class Cart
+ *
+ * Image de la table cart de la base de données
+ *
+ * @package App\Model
+ */
 class Cart
 {
+    /**
+     * @var int|null
+     */
     private int|null $id = null;
 
+    /**
+     * @var int|null
+     */
     private int|null $user_id = null;
 
+    /**
+     * @var int|null
+     */
     private int|null $price = null;
 
+    /**
+     * Cart constructor.
+     *
+     * @param int|null $id
+     * @param int|null $user_id
+     * @param int|null $price
+     */
     public function __construct(int|null $id = null, int|null $user_id = null, int|null $price = null)
     {
         $this->id = $id;
@@ -16,6 +39,12 @@ class Cart
         $this->price = $price;
     }
 
+    /**
+     * Récupère un panier en fonction de l'id de l'utilisateur
+     *
+     * @param int $user_id
+     * @return bool|Cart
+     */
     public function findOneByUserId(int $user_id): bool|Cart
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -35,6 +64,12 @@ class Cart
         return false;
     }
 
+    /**
+     * Récupère la catégorie d'un produit en fonction de son id
+     *
+     * @param int $product_id
+     * @return string|false
+     */
     public function getCategoryByProductId(int $product_id): string|false
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -51,6 +86,11 @@ class Cart
         return $result['category_id'];
     }
 
+    /**
+     * Enregistre un panier dans la base de données
+     *
+     * @return bool
+     */
     public function save(): bool
     {
         try {
@@ -70,6 +110,11 @@ class Cart
         }
     }
 
+    /**
+     * Met à jour un panier dans la base de données
+     *
+     * @return bool
+     */
     public function update(): bool
     {
         try {
@@ -88,6 +133,13 @@ class Cart
         }
     }
 
+    /**
+     * Ajoute un produit au panier
+     *
+     * @param int $product_id
+     * @param int $cart_id
+     * @return bool
+     */
     public function addProductToCart(int $product_id, int $cart_id): bool
     {
         try {

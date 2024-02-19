@@ -12,10 +12,25 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
+/**
+ * Class ShopController
+ *
+ * Gère les actions liées à la boutique
+ *
+ * @package App\Controller
+ */
 class ShopController
 {
+    /**
+     * @var Product
+     */
     private $productModel;
 
+    /**
+     * ShopController constructor.
+     *
+     * @param Product $productModel
+     */
     public function __construct(Product $productModel)
     {
         // Assurez-vous que Dotenv est nécessaire ici. Si votre application charge Dotenv ailleurs,
@@ -26,6 +41,11 @@ class ShopController
         $this->productModel = $productModel;
     }
 
+    /**
+     * Affiche la liste des produits
+     *
+     * @param int $page
+     */
     public function index($page = 1)
     {
         // Validation du numéro de page
@@ -44,6 +64,13 @@ class ShopController
         require __DIR__ . '/../../views/shop.php';
     }
 
+    /**
+     * Affiche un produit
+     *
+     * @param int $id_product
+     * @param string $product_type
+     * @return mixed
+     */
     public function showProduct(int $id_product, string $product_type)
     {
         if (isset($_SESSION['user'])) {
@@ -83,7 +110,7 @@ class ShopController
 
 /**
  * Vérifie s'il y a une requête POST
- * Instancie un objet AuthenticationController
+ * Instancie un objet ShopController
  * Appelle la méthode nécessaire en fonction de la valeur de $_POST['form-name']
  */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

@@ -5,20 +5,51 @@ namespace App\Model;
 use App\Model\Abstract\AbstractProduct;
 use App\Model\Interface\StockableInterface;
 
+/**
+ * Class Electronic
+ *
+ * Gère les produits électroniques
+ *
+ * @package App\Model
+ */
 class Electronic extends AbstractProduct implements StockableInterface
 {
 
+    /**
+     * Marque du produit
+     *
+     * @var string|null
+     */
     private ?string $brand = null;
 
+    /**
+     * Frais de garantie du produit
+     *
+     * @var int|null
+     */
     private ?int $waranty_fee = null;
 
+    /**
+     * Electronic constructor.
+     *
+     * @param int|null $id
+     * @param string|null $name
+     * @param array|null $photos
+     * @param int|null $price
+     * @param string|null $description
+     * @param int|null $quantity
+     * @param int|null $category_id
+     * @param \DateTime|null $createdAt
+     * @param \DateTime|null $updatedAt
+     * @param string|null $brand
+     * @param int|null $waranty_fee
+     */
     public function __construct(?int $id = null, ?string $name = null, ?array $photos = null, ?int $price = null, ?string $description = null, ?int $quantity = null, ?int $category_id = null, ?\DateTime $createdAt = null, ?\DateTime $updatedAt = null, ?string $brand = null, ?int $waranty_fee = null)
     {
         parent::__construct($id, $name, $photos, $price, $description, $quantity, $category_id, $createdAt, $updatedAt);
         $this->brand = $brand;
         $this->waranty_fee = $waranty_fee;
     }
-
     public function addStock(int $quantity): static
     {
         $this->quantity += $quantity;

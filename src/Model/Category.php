@@ -2,18 +2,51 @@
 
 namespace App\Model;
 
+use Exception;
+
+/**
+ * Class Category
+ *
+ * Image de la table category de la base de données
+ *
+ * @package App\Model
+ */
 class Category
 {
+    /**
+     * @var int|null
+     */
     private ?int $id;
 
+    /**
+     * @var string|null
+     */
     private ?string $name;
 
+    /**
+     * @var string|null
+     */
     private ?string $description;
 
+    /**
+     * @var \DateTime|null
+     */
     private ?\DateTime $createdAt;
 
+    /**
+     * @var \DateTime|null
+     */
     private ?\DateTime $updatedAt;
 
+    /**
+     * Category constructor.
+     *
+     * @param int|null $id
+     * @param string|null $name
+     * @param string|null $description
+     * @param \DateTime|null $createdAt
+     * @param \DateTime|null $updatedAt
+     */
     public function __construct(?int $id = null, ?string $name = null, ?string $description = null, ?\DateTime $createdAt = null, ?\DateTime $updatedAt = null)
     {
         $this->id = $id;
@@ -23,61 +56,12 @@ class Category
         $this->updatedAt = $updatedAt;
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): Category
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): Category
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): Category
-    {
-        $this->description = $description;
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTime
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(?\DateTime $createdAt): Category
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTime $updatedAt): Category
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
+    /**
+     * Récupère les produits en fonction de la catégorie
+     *
+     * @return array
+     * @throws Exception
+     */
     public function getProducts(): array
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -138,6 +122,13 @@ class Category
         return $products;
     }
 
+    /**
+     * Récupère une catégorie en fonction de son id
+     *
+     * @param int $id
+     * @return Category|false
+     * @throws Exception
+     */
     public function findOneById(int $id): static|false
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -159,6 +150,12 @@ class Category
         return false;
     }
 
+    /**
+     * Récupère toutes les catégories
+     *
+     * @return array
+     * @throws Exception
+     */
     public function findAll(): array
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -180,6 +177,12 @@ class Category
         return $results;
     }
 
+    /**
+     * Créer une catégorie
+     *
+     * @return Category
+     * @throws Exception
+     */
     public function create(): static
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -193,6 +196,12 @@ class Category
         return $this;
     }
 
+    /**
+     * Met à jour une catégorie
+     *
+     * @return Category
+     * @throws Exception
+     */
     public function update(): static
     {
         $pdo = new \PDO('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'] . ';port=' . $_ENV['DB_PORT'], $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
@@ -206,4 +215,58 @@ class Category
         return $this;
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): Category
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): Category
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): Category
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTime $createdAt): Category
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTime $updatedAt): Category
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
 }

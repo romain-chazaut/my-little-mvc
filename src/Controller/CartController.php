@@ -16,10 +16,26 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+/**
+ * Class CartController
+ *
+ * Gère les actions liées au panier
+ *
+ * @package App\Controller
+ */
 class CartController
 {
-
-    public function addProductToCart(int $product_id)
+    /**
+     * Ajoute un produit au panier
+     * Récupère la catégorie avec l'id du produit
+     * Créer un objet product en fonction de la catégorie
+     * Vérifie si l'user à un panier puis le mets à jour ou le crée avec le prix du produit
+     * Appelle la fonction addProductToCart() avec l'id du produit et l'id du panier
+     *
+     * @param int $product_id
+     * @return bool
+     */
+    public function addProductToCart(int $product_id): bool
     {
         $user = $_SESSION['user'];
         $user_id = $user->getId();
