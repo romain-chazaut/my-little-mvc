@@ -5,10 +5,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
 $dotenv->load();
 
-if (session_status() === PHP_SESSION_NONE) {
+if (!isset($_SESSION)) {
     session_start();
 }
 
+
+// Redirige l'utilisateur vers la page de connexion s'il n'est pas connecté
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
     if ($user->getState() == 0 || $user->getState() == '') {
@@ -18,17 +20,18 @@ if (isset($_SESSION['user'])) {
     }
 }
 
-// Redirige l'utilisateur vers la page de connexion s'il n'est pas connecté
 
+// Supposons que vous avez une classe Product qui inclut une méthode findPaginated
+// et une méthode pour compter le total des produits pour la pagination
 $productModel = new \App\Model\Product(); // Assurez-vous que cette classe existe
+
+// Récupération du numéro de la page depuis l'URL, avec 1 comme valeur par défaut
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
+// Récupération des produits paginés et du nombre total de produits
 $products = $productModel->findPaginated($page, 5); // 5 produits par page
 $totalProducts = $productModel->count(); // Méthode pour compter le total des produits
-
 $totalPages = ceil($totalProducts / 5);
-
-$user_id = $_SESSION['user']->getId();
 ?>
 
 <!doctype html>
@@ -46,24 +49,23 @@ $user_id = $_SESSION['user']->getId();
     <body>
         <h1>Produits Paginés</h1>
         <button class="home-button">
-            <a href="../index.php">home</a>
-            <a href="../View/cart.php">Cart</a>
-        </button>
+        <a href="../index.php">home</a>
+        <a href="../View/cart.php">Cart</a>
+    </button>
         <table>
             <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nom</th>
-                    <th>Photos</th>
-                    <th>Prix</th>
-                    <th>Description</th>
-                    <th>Quantité</th>
-                    <th>Catégorie</th>
-                    <th>Date de création</th>
-                    <th>Date de mise à jour</th>
-                    <th>Afficher le produit</th>
-                    <th>Ajouter au Panier</th>
-                </tr>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Photos</th>
+                <th>Prix</th>
+                <th>Description</th>
+                <th>Quantité</th>
+                <th>Catégorie</th>
+                <th>Date de création</th>
+                <th>Date de mise à jour</th>
+                <th>Afficher le produit</th>
+            </tr>
             </thead>
             <tbody>
             <?php foreach ($products as $product): ?>
@@ -83,13 +85,6 @@ $user_id = $_SESSION['user']->getId();
                             <input type="hidden" name="id_product" value="<?= $product['id'] ?>">
                             <input type="hidden" name="product_type" value="<?php if ($product['category_id'] == 1){echo 'clothing';}  else{echo 'electronic';} ?>">
                             <button type="submit">Afficher</button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="../src/Controller/CartController.php" method="post">
-                            <input type="hidden" name="form-name" value="add-cart-form">
-                            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
-                            <button type="submit">Ajouter</button>
                         </form>
                     </td>
                 </tr>

@@ -4,16 +4,14 @@ namespace App\Controller;
 require_once '../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
+use App\Model\User;
 
 $dotenv = Dotenv::createImmutable(__DIR__.'/../../');
 $dotenv->load();
 
-use App\Model\User;
-
-if (!isset($_SESSION)) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
 /**
  * Class AuthenticationController
  *
