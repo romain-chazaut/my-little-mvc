@@ -47,7 +47,7 @@ $user_id = $_SESSION['user']->getId();
         <h1>Nos produits</h1>
         <button class="home-button">
             <a href="../index.php">home</a>
-            <a href="../View/cart.php">Cart</a>
+            <a href="">Cart</a>
         </button>
         <table>
             <thead>
