@@ -11,36 +11,6 @@ namespace App\Model;
 class User
 {
     /**
-     * @var int|null L'id de l'utilisateur
-     */
-    private ?int $id = null;
-
-    /**
-     * @var string|null Le nom complet de l'utilisateur
-     */
-    private ?string $fullname = null;
-
-    /**
-     * @var string|null L'email de l'utilisateur
-     */
-    private ?string $email = null;
-
-    /**
-     * @var string|null Le mot de passe de l'utilisateur
-     */
-    private ?string $password = null;
-
-    /**
-     * @var array Les rôles de l'utilisateur
-     */
-    private array $role = [];
-
-    /**
-     * @var bool L'état de connexion de l'utilisateur
-     */
-    private bool $state = false;
-
-    /**
      * User constructor.
      *
      * @param int|null $id
@@ -52,21 +22,14 @@ class User
      */
     public function __construct
     (
-        ?int $id = null,
-        ?string $fullname = null, ?
-        string $email = null,
-        ?string $password = null,
-        array $role = [],
-        bool $state = false
+        private ?int $id = null,
+        private ?string $fullname = null,
+        private ?string $email = null,
+        private ?string $password = null,
+        private array $role = [],
+        private bool $state = false
     )
-    {
-        $this->id = $id;
-        $this->fullname = $fullname;
-        $this->email = $email;
-        $this->password = $password;
-        $this->role = $role;
-        $this->state = $state;
-    }
+    {}
 
     /**
      * Récupère un utilisateur avec son id puis créer un objet User avec les données récupérées
