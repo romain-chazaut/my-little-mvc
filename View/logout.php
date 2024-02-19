@@ -3,7 +3,7 @@ require_once '../vendor/autoload.php';
 
 use App\Model\User;
 
-if (!isset($_SESSION)) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
